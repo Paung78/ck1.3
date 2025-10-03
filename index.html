@@ -2,503 +2,887 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Phoenix Prediction Premium</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <title>Quantum AI | Premium Prediction</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&family=Orbitron:wght@500;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
   <style>
     :root {
-      --primary: #1a1a2e;
-      --secondary: #16213e;
-      --accent: #6e45e2;
-      --accent-light: #88d3ce;
-      --danger: #ff4d4d;
-      --warning: #ffa447;
-      --success: #4dff88;
-      --text: #ffffff;
-      --glass-bg: rgba(26, 32, 44, 0.9);
-      --glass-border: rgba(255, 255, 255, 0.1);
+      --quantum-blue: #00f5ff;
+      --neon-pink: #ff00e6;
+      --matrix-green: #00ff9d;
+      --cyber-purple: #8a2be2;
+      --dark-space: #0a0a1a;
+      --deep-space: #050510;
+      --cosmic-gray: #1a1a2e;
+      --stardust: rgba(255, 255, 255, 0.9);
+      --nebula: rgba(255, 255, 255, 0.6);
     }
     
     * {
+      box-sizing: border-box;
       margin: 0;
       padding: 0;
-      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+    
+    html, body {
+      height: 100%;
+      overflow: hidden;
+      -webkit-text-size-adjust: 100%;
     }
     
     body {
-      font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
-      color: var(--text);
-      min-height: 100vh;
+      font-family: 'Montserrat', sans-serif;
+      color: var(--stardust);
+      background: var(--deep-space);
       display: flex;
       justify-content: center;
       align-items: center;
-      text-align: center;
-      padding: 20px;
+      min-height: 100vh;
+      padding: 15px;
+      overflow: hidden;
       position: relative;
-      overflow-x: hidden;
+      width: 100vw;
+      height: 100vh;
     }
     
-    body::before {
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: radial-gradient(circle, rgba(110, 69, 226, 0.1) 0%, rgba(110, 69, 226, 0) 70%);
-      z-index: -1;
-      animation: rotate 15s linear infinite;
-    }
-    
-    @keyframes rotate {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-    
-    .container {
+    /* Quantum Background Effects */
+    .quantum-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
       width: 100%;
-      max-width: 480px;
-      padding: 30px;
-      background: var(--glass-bg);
-      border-radius: 20px;
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      border: 1px solid var(--glass-border);
+      height: 100%;
+      z-index: -2;
+    }
+    
+    .quantum-particle {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: var(--quantum-blue);
+      border-radius: 50%;
+      animation: quantumFloat 8s infinite linear;
+      opacity: 0.7;
+    }
+    
+    .quantum-glow {
+      position: fixed;
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      filter: blur(50px);
+      opacity: 0.3;
+      z-index: -1;
+    }
+    
+    .glow-1 {
+      background: var(--quantum-blue);
+      top: -30px;
+      left: -30px;
+      animation: pulseGlow 4s ease-in-out infinite;
+    }
+    
+    .glow-2 {
+      background: var(--neon-pink);
+      bottom: -30px;
+      right: -30px;
+      animation: pulseGlow 4s ease-in-out infinite 2s;
+    }
+    
+    /* Key Activation System */
+    .quantum-gate {
+      width: 100%;
+      max-width: 340px;
+      background: rgba(26, 26, 46, 0.95);
+      border-radius: 18px;
+      padding: 20px 18px;
+      box-shadow: 
+        0 0 25px rgba(0, 245, 255, 0.2),
+        inset 0 0 25px rgba(0, 245, 255, 0.1);
+      border: 1px solid rgba(0, 245, 255, 0.3);
+      backdrop-filter: blur(15px);
       position: relative;
       overflow: hidden;
-      z-index: 1;
     }
     
-    .container::after {
+    .quantum-gate::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(0, 245, 255, 0.1),
+        transparent
+      );
+      transition: 0.5s;
+    }
+    
+    .hologram-logo {
+      width: 70px;
+      height: 70px;
+      margin: 0 auto 15px;
+      background: linear-gradient(135deg, var(--quantum-blue), var(--neon-pink));
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      color: white;
+      box-shadow: 
+        0 0 15px var(--quantum-blue),
+        0 0 30px rgba(0, 245, 255, 0.3);
+      position: relative;
+      animation: hologramPulse 3s ease-in-out infinite;
+    }
+    
+    .quantum-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 800;
+      text-align: center;
+      margin-bottom: 6px;
+      background: linear-gradient(135deg, var(--quantum-blue), var(--neon-pink), var(--matrix-green));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 0 15px rgba(0, 245, 255, 0.5);
+      letter-spacing: 1px;
+      line-height: 1.2;
+    }
+    
+    .quantum-subtitle {
+      text-align: center;
+      font-size: 0.75rem;
+      color: var(--nebula);
+      margin-bottom: 20px;
+      font-weight: 300;
+      letter-spacing: 0.5px;
+      line-height: 1.3;
+    }
+    
+    .quantum-input {
+      width: 100%;
+      padding: 14px 12px;
+      margin: 10px 0;
+      background: rgba(10, 10, 26, 0.6);
+      border: 2px solid rgba(0, 245, 255, 0.3);
+      border-radius: 10px;
+      color: var(--stardust);
+      font-size: 16px;
+      text-align: center;
+      transition: all 0.3s ease;
+      font-family: 'Montserrat', sans-serif;
+    }
+    
+    .quantum-input:focus {
+      outline: none;
+      border-color: var(--quantum-blue);
+      box-shadow: 0 0 12px rgba(0, 245, 255, 0.4);
+      background: rgba(10, 10, 26, 0.8);
+    }
+    
+    .quantum-button {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(135deg, var(--quantum-blue), var(--neon-pink));
+      border: none;
+      border-radius: 10px;
+      color: white;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      font-family: 'Orbitron', sans-serif;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      margin-top: 8px;
+    }
+    
+    .quantum-button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.2),
+        transparent
+      );
+      transition: 0.5s;
+    }
+    
+    .quantum-button:active {
+      transform: translateY(-2px);
+      box-shadow: 
+        0 4px 15px rgba(0, 245, 255, 0.4),
+        0 0 15px rgba(255, 0, 230, 0.3);
+    }
+    
+    .quantum-button:active::before {
+      left: 100%;
+    }
+    
+    .quantum-timer {
+      text-align: center;
+      margin: 15px 0;
+      padding: 10px;
+      background: rgba(0, 245, 255, 0.1);
+      border-radius: 8px;
+      border: 1px solid rgba(0, 245, 255, 0.2);
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.75rem;
+      color: var(--quantum-blue);
+    }
+    
+    .quantum-success {
+      display: none;
+      text-align: center;
+      padding: 18px;
+      background: rgba(0, 255, 157, 0.1);
+      border-radius: 12px;
+      border: 1px solid rgba(0, 255, 157, 0.3);
+      margin-top: 15px;
+    }
+    
+    .success-icon {
+      font-size: 2.2rem;
+      color: var(--matrix-green);
+      margin-bottom: 10px;
+      text-shadow: 0 0 12px var(--matrix-green);
+    }
+    
+    .quantum-badge {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: linear-gradient(135deg, var(--quantum-blue), var(--neon-pink));
+      color: white;
+      padding: 5px 10px;
+      border-radius: 15px;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      box-shadow: 0 0 8px rgba(0, 245, 255, 0.5);
+    }
+    
+    /* Main Quantum Interface */
+    .quantum-interface {
+      width: 100%;
+      max-width: 340px;
+      background: rgba(26, 26, 46, 0.95);
+      border-radius: 18px;
+      padding: 18px 15px;
+      box-shadow: 
+        0 0 30px rgba(0, 245, 255, 0.25),
+        inset 0 0 30px rgba(0, 245, 255, 0.1);
+      border: 1px solid rgba(0, 245, 255, 0.4);
+      backdrop-filter: blur(15px);
+      position: relative;
+      display: none;
+      overflow: hidden;
+    }
+    
+    .quantum-interface::before {
       content: '';
       position: absolute;
       top: 0;
       left: 0;
-      width: 100%;
-      height: 4px;
-      background: linear-gradient(90deg, var(--accent), var(--accent-light));
-    }
-    
-    h1 {
-      font-size: 28px;
-      margin-bottom: 25px;
-      background: linear-gradient(to right, var(--accent), var(--accent-light));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      text-shadow: 0 0 15px rgba(110, 69, 226, 0.3);
-      position: relative;
-      display: inline-block;
-    }
-    
-    h1::after {
-      content: '';
-      position: absolute;
-      bottom: -8px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 60%;
+      right: 0;
       height: 2px;
-      background: linear-gradient(90deg, transparent, var(--accent-light), transparent);
+      background: linear-gradient(90deg, var(--quantum-blue), var(--neon-pink), var(--matrix-green));
     }
     
-    input {
-      width: 100%;
-      padding: 14px;
-      margin: 15px 0;
-      border: 2px solid var(--accent);
-      border-radius: 10px;
-      background: rgba(18, 18, 18, 0.7);
-      color: var(--text);
-      font-size: 16px;
-      font-weight: 600;
+    .quantum-header {
       text-align: center;
-      box-shadow: 0 0 15px rgba(110, 69, 226, 0.2);
-      transition: all 0.3s ease;
+      margin-bottom: 15px;
     }
     
-    input:focus {
-      outline: none;
-      border-color: var(--accent-light);
-      box-shadow: 0 0 20px rgba(136, 211, 206, 0.4);
-    }
-    
-    button {
-      width: 100%;
-      padding: 14px;
-      border: none;
-      border-radius: 10px;
-      background: linear-gradient(to right, var(--accent), var(--accent-light));
-      color: white;
-      font-size: 18px;
-      font-weight: 700;
-      cursor: pointer;
-      box-shadow: 0 5px 20px rgba(110, 69, 226, 0.4);
-      transition: all 0.3s ease;
-      margin-top: 15px;
-    }
-    
-    button:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 25px rgba(110, 69, 226, 0.6);
-    }
-    
-    .error {
-      color: var(--danger);
-      margin-top: 10px;
-      display: none;
-      font-weight: 600;
-      text-shadow: 0 0 8px rgba(255, 77, 77, 0.3);
-    }
-    
-    .success {
-      color: var(--success);
-      margin-top: 10px;
-      display: none;
-      font-weight: 700;
-      text-shadow: 0 0 10px rgba(77, 255, 136, 0.3);
-    }
-    
-    #uid-verification, #prediction-page, #timeout-page {
-      display: none;
-    }
-    
-    .box {
-      display: inline-block;
-      padding: 10px 15px;
-      font-size: 18px;
-      font-weight: 700;
-      margin: 8px;
-      border-radius: 8px;
-      border: 2px solid var(--accent);
-      background: rgba(18, 18, 18, 0.5);
-      box-shadow: 0 0 15px rgba(110, 69, 226, 0.2);
-    }
-    
-    .period-box { 
-      color: #ffd700;
-      border-color: #ffd700;
-    }
-    
-    .big { 
-      color: var(--accent-light);
-      border-color: var(--accent-light);
-    }
-    
-    .small { 
-      color: var(--warning);
-      border-color: var(--warning);
-    }
-    
-    .number-box { 
-      color: var(--accent);
-      border-color: var(--accent);
-    }
-    
-    .predict-btn {
-      background: white;
-      color: var(--accent);
-      font-weight: 700;
-      box-shadow: 0 5px 20px rgba(255, 255, 255, 0.2);
-    }
-    
-    .predict-btn:hover {
-      background: #f0f0f0;
-      box-shadow: 0 8px 25px rgba(255, 255, 255, 0.3);
-    }
-    
-    #live-result {
-      font-size: 14px;
-      font-weight: 700;
-      color: var(--accent-light);
-      margin: 15px 0;
-      text-shadow: 0 0 8px rgba(136, 211, 206, 0.3);
-    }
-    
-    .button-group {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin-top: 20px;
-    }
-    
-    .button-group button {
-      margin: 0;
-    }
-    
-    .register-btn {
-      background: linear-gradient(to right, var(--accent), var(--accent-light));
-    }
-    
-    .telegram-btn {
-      background: linear-gradient(to right, #1e88e5, #0d47a1);
-    }
-    
-    .video-btn {
-      background: linear-gradient(to right, #ff416c, #ff4b2b);
-    }
-    
-    .admin-btn {
-      background: linear-gradient(to right, #654ea3, #eaafc8);
-    }
-    
-    .loading {
-      display: inline-block;
-      width: 20px;
-      height: 20px;
-      border: 3px solid rgba(255,255,255,.1);
-      border-radius: 50%;
-      border-top-color: var(--accent);
-      animation: spin 1s ease-in-out infinite;
-      margin-left: 10px;
-    }
-    
-    @keyframes spin {
-      to { transform: rotate(360deg); }
+    .quantum-display {
+      background: rgba(10, 10, 26, 0.6);
+      border-radius: 12px;
+      padding: 15px 12px;
+      margin-bottom: 15px;
+      border: 1px solid rgba(0, 245, 255, 0.2);
+      position: relative;
+      overflow: hidden;
     }
     
     .time-display {
-      position: absolute;
-      top: 15px;
-      right: 15px;
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--accent-light);
-      text-shadow: 0 0 8px rgba(136, 211, 206, 0.3);
-      background: rgba(26, 32, 44, 0.7);
-      padding: 6px 12px;
-      border-radius: 20px;
-      border: 1px solid rgba(136, 211, 206, 0.3);
-    }
-    
-    #timeout-page h1 {
-      background: linear-gradient(to right, var(--danger), #ff7676);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-    
-    .getout-btn {
-      background: linear-gradient(to right, var(--danger), #ff7676);
-      box-shadow: 0 5px 20px rgba(255, 77, 77, 0.4);
-    }
-    
-    .getout-btn:hover {
-      background: linear-gradient(to right, #ff3636, #ff6363);
-      box-shadow: 0 8px 25px rgba(255, 77, 77, 0.6);
-    }
-    
-    .premium-badge {
-      position: absolute;
-      top: 15px;
-      left: 15px;
-      background: linear-gradient(45deg, #ff8a00, #ff0058);
-      color: white;
-      padding: 4px 12px;
-      border-radius: 20px;
-      font-size: 10px;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.7rem;
       font-weight: 700;
-      text-transform: uppercase;
+      text-align: center;
+      color: var(--quantum-blue);
+      text-shadow: 0 0 12px var(--quantum-blue);
+      margin-bottom: 8px;
       letter-spacing: 1px;
-      box-shadow: 0 0 15px rgba(255, 0, 88, 0.5);
     }
     
-    @media (max-width: 480px) {
-      .container {
-        padding: 25px;
+    .period-display {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.7rem;
+      text-align: center;
+      color: var(--nebula);
+      margin-bottom: 12px;
+      line-height: 1.3;
+    }
+    
+    .prediction-display {
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 10px;
+      padding: 12px;
+      margin: 12px 0;
+      border: 1px solid rgba(0, 245, 255, 0.3);
+      position: relative;
+    }
+    
+    .prediction-label {
+      position: absolute;
+      top: -6px;
+      left: 12px;
+      background: var(--cosmic-gray);
+      padding: 0 6px;
+      font-size: 0.65rem;
+      color: var(--quantum-blue);
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+    
+    .prediction-result {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 800;
+      text-align: center;
+      padding: 10px;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      min-height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .prediction-big {
+      color: var(--matrix-green);
+      text-shadow: 0 0 15px var(--matrix-green);
+      background: rgba(0, 255, 157, 0.1);
+      border: 1px solid rgba(0, 255, 157, 0.3);
+    }
+    
+    .prediction-small {
+      color: var(--neon-pink);
+      text-shadow: 0 0 15px var(--neon-pink);
+      background: rgba(255, 0, 230, 0.1);
+      border: 1px solid rgba(255, 0, 230, 0.3);
+    }
+    
+    .countdown-timer {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.8rem;
+      text-align: center;
+      color: var(--quantum-blue);
+      padding: 10px;
+      background: rgba(0, 245, 255, 0.1);
+      border-radius: 8px;
+      border: 1px solid rgba(0, 245, 255, 0.2);
+      margin: 10px 0;
+    }
+    
+    .quantum-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 12px;
+    }
+    
+    .stat-card {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 8px;
+      padding: 10px;
+      text-align: center;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .stat-value {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 3px;
+    }
+    
+    .stat-big {
+      color: var(--matrix-green);
+    }
+    
+    .stat-small {
+      color: var(--neon-pink);
+    }
+    
+    .stat-label {
+      font-size: 0.65rem;
+      color: var(--nebula);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    .quantum-footer {
+      text-align: center;
+      margin-top: 15px;
+      padding-top: 10px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--nebula);
+      font-size: 0.65rem;
+      letter-spacing: 0.5px;
+      line-height: 1.3;
+    }
+    
+    .credit-text {
+      color: var(--matrix-green);
+      font-weight: 600;
+      margin-top: 3px;
+    }
+    
+    /* Animations */
+    @keyframes quantumFloat {
+      0% {
+        transform: translateY(100vh) rotate(0deg);
+        opacity: 0;
+      }
+      10% {
+        opacity: 0.7;
+      }
+      90% {
+        opacity: 0.7;
+      }
+      100% {
+        transform: translateY(-100px) rotate(360deg);
+        opacity: 0;
+      }
+    }
+    
+    @keyframes pulseGlow {
+      0%, 100% {
+        opacity: 0.3;
+        transform: scale(1);
+      }
+      50% {
+        opacity: 0.5;
+        transform: scale(1.1);
+      }
+    }
+    
+    @keyframes hologramPulse {
+      0%, 100% {
+        box-shadow: 
+          0 0 15px var(--quantum-blue),
+          0 0 30px rgba(0, 245, 255, 0.3);
+      }
+      50% {
+        box-shadow: 
+          0 0 20px var(--quantum-blue),
+          0 0 40px rgba(0, 245, 255, 0.5),
+          0 0 60px rgba(255, 0, 230, 0.3);
+      }
+    }
+    
+    @keyframes quantumGlow {
+      0%, 100% {
+        box-shadow: 
+          0 0 25px rgba(0, 245, 255, 0.2),
+          inset 0 0 25px rgba(0, 245, 255, 0.1);
+      }
+      50% {
+        box-shadow: 
+          0 0 35px rgba(0, 245, 255, 0.3),
+          inset 0 0 35px rgba(0, 245, 255, 0.15);
+      }
+    }
+    
+    .quantum-gate {
+      animation: quantumGlow 3s ease-in-out infinite;
+    }
+    
+    /* Very Small Phones */
+    @media (max-width: 320px) {
+      body {
+        padding: 10px;
       }
       
-      h1 {
-        font-size: 24px;
+      .quantum-gate, .quantum-interface {
+        padding: 15px 12px;
+        max-width: 300px;
       }
       
-      .button-group {
-        grid-template-columns: 1fr;
+      .hologram-logo {
+        width: 60px;
+        height: 60px;
+        font-size: 1.6rem;
       }
+      
+      .quantum-title {
+        font-size: 1.3rem;
+      }
+      
+      .time-display {
+        font-size: 1.5rem;
+      }
+      
+      .prediction-result {
+        font-size: 1.3rem;
+        min-height: 45px;
+      }
+      
+      .quantum-input, .quantum-button {
+        padding: 12px 10px;
+        font-size: 15px;
+      }
+    }
+    
+    /* Prevent zoom on input focus */
+    @media screen and (max-width: 768px) {
+      input, select, textarea {
+        font-size: 16px;
+      }
+    }
+    
+    /* Hide scrollbars */
+    .quantum-gate::-webkit-scrollbar,
+    .quantum-interface::-webkit-scrollbar {
+      display: none;
+    }
+    
+    .quantum-gate,
+    .quantum-interface {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
     }
   </style>
 </head>
 <body>
-  <!-- Time Display -->
-  <div class="time-display" id="time-display">00:00</div>
-  
-  <!-- LOGIN PAGE -->
-  <div id="login-box" class="container">
-    <div class="premium-badge">Premium</div>
-    <h1>Phoenix Prediction</h1>
-    <input type="password" id="password" placeholder="Enter Access Key">
-    <button onclick="checkLogin()">Unlock System</button>
-    <p class="error" id="error-message">Invalid Access Key</p>
+  <!-- Quantum Background Effects -->
+  <div class="quantum-bg" id="quantum-bg"></div>
+  <div class="quantum-glow glow-1"></div>
+  <div class="quantum-glow glow-2"></div>
+
+  <!-- Key Activation System -->
+  <div id="key-activation" class="quantum-gate">
+    <div class="quantum-badge">
+      <i class="fas fa-atom"></i> QUANTUM ACCESS
+    </div>
     
-    <div class="button-group">
-      <a href="https://cklottery.cc/#/register?invitationCode=81487219676" target="_blank">
-        <button class="register-btn"><i class="fas fa-user-plus"></i> Register</button>
-      </a>
-      <a href="https://t.me/PGmoney67800" target="_blank">
-        <button class="telegram-btn"><i class="fab fa-telegram"></i> Channel</button>
-      </a>
-      <a href="https://t.me/colourtradingincome2" target="_blank">
-        <button class="video-btn"><i class="fas fa-video"></i> Tutorial</button>
-      </a>
-      <a href="https://t.me/paunggyi111" target="_blank">
-        <button class="admin-btn"><i class="fas fa-headset"></i> Support</button>
-      </a>
+    <div class="hologram-logo">
+      <i class="fas fa-brain"></i>
+    </div>
+    
+    <h1 class="quantum-title">QUANTUM AI</h1>
+    <div class="quantum-subtitle">Neural Network Prediction System</div>
+    
+    <input type="text" id="keyInput" class="quantum-input" placeholder="ENTER QUANTUM ACCESS KEY">
+    
+    <button class="quantum-button" onclick="activateKey()">
+      <i class="fas fa-key"></i> ACTIVATE QUANTUM CORE
+    </button>
+    
+    <div id="key-timer" class="quantum-timer"></div>
+    
+    <div id="key-content" class="quantum-success">
+      <div class="success-icon">
+        <i class="fas fa-check-circle"></i>
+      </div>
+      <h3 style="margin-bottom: 8px; color: var(--matrix-green); font-size: 1rem;">QUANTUM ACCESS GRANTED</h3>
+      <p style="color: var(--nebula); margin-bottom: 12px; font-size: 0.75rem;">Neural network initialized successfully</p>
+      <button class="quantum-button" onclick="showQuantumInterface()" style="background: linear-gradient(135deg, var(--matrix-green), var(--quantum-blue));">
+        <i class="fas fa-rocket"></i> LAUNCH QUANTUM AI
+      </button>
+    </div>
+    
+    <div class="quantum-footer">
+      QUANTUM COMPUTING SYSTEM<br>
+      <span class="credit-text">CRD BY PYAUNGGYI</span>
     </div>
   </div>
-  
-  <!-- UID VERIFICATION PAGE -->
-  <div id="uid-verification" class="container">
-    <div class="premium-badge">Premium</div>
-    <h1>Account Verification</h1>
-    <input type="text" id="uid" placeholder="Enter Your UID (4-6 digits)" maxlength="6">
-    <button onclick="verifyUID()">Verify Identity</button>
-    <p class="error" id="uid-error">Invalid UID Format</p>
-    <p class="success" id="uid-success">Verification Successful <span class="loading"></span></p>
-  </div>
-  
-  <!-- PREDICTION PAGE -->
-  <div id="prediction-page" class="container">
-    <div class="premium-badge">Premium</div>
-    <h1>Live Prediction</h1>
-    <p id="result" class="result">PERIOD: <span class="box period-box">--</span></p>
-    <p id="signal" class="signal">SIGNAL: <span class="box">--</span></p>
-    <p id="prediction" class="prediction">NUMBERS: <span class="box number-box">--/--</span></p>
-    <p id="live-result">Updating live data...</p>
-    <button class="predict-btn" onclick="fetchPrediction()"><i class="fas fa-sync-alt"></i> Refresh Prediction</button>
-  </div>
-  
-  <!-- TIMEOUT PAGE -->
-  <div id="timeout-page" class="container">
-    <div class="premium-badge">Premium</div>
-    <h1>Session Expired</h1>
-    <p>Your premium session has ended</p>
-    <button class="getout-btn" onclick="resetApplication()"><i class="fas fa-sign-out-alt"></i> Exit System</button>
+
+  <!-- Main Quantum Interface -->
+  <div id="quantum-interface" class="quantum-interface">
+    <div class="quantum-badge">
+      <i class="fas fa-bolt"></i> ACTIVE
+    </div>
+    
+    <div class="quantum-header">
+      <div class="hologram-logo" style="width: 55px; height: 55px; font-size: 1.4rem; margin-bottom: 10px;">
+        <i class="fas fa-robot"></i>
+      </div>
+      <h1 class="quantum-title" style="font-size: 1.2rem;">QUANTUM AI PREDICTION</h1>
+      <div class="quantum-subtitle" style="font-size: 0.7rem;">Real-time Neural Analysis</div>
+    </div>
+    
+    <div class="quantum-display">
+      <div class="time-display" id="clock">--:--:--</div>
+      <div class="period-display" id="period">QUANTUM PERIOD: --------</div>
+      
+      <div class="countdown-timer" id="timer">
+        <i class="fas fa-sync-alt"></i> NEXT PREDICTION: <span id="countdown">30s</span>
+      </div>
+      
+      <div class="prediction-display">
+        <div class="prediction-label">QUANTUM PREDICTION</div>
+        <div class="prediction-result" id="prediction-result">--</div>
+      </div>
+      
+      <div class="quantum-stats">
+        <div class="stat-card">
+          <div class="stat-value stat-big" id="big-count">0</div>
+          <div class="stat-label">BIG Signals</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value stat-small" id="small-count">0</div>
+          <div class="stat-label">SMALL Signals</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="quantum-footer">
+      QUANTUM NEURAL NETWORK ACTIVE • REAL-TIME ANALYSIS<br>
+      <span class="credit-text">CRD BY PYAUNGGYI</span>
+    </div>
   </div>
 
   <script>
-    // Time tracking variables
-    let seconds = 0;
-    let timerInterval;
-    const MAX_TIME = 600; // 10 minutes in seconds
-
-    // Start timer when page loads
-    window.onload = function() {
-      updateTimeDisplay();
-    };
-
-    function updateTimeDisplay() {
-      const minutes = Math.floor(seconds / 60);
-      const remainingSeconds = seconds % 60;
-      document.getElementById("time-display").textContent = 
-        `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
-    }
-
-    function startTimer() {
-      clearInterval(timerInterval);
-      seconds = 0;
-      updateTimeDisplay();
+    // Create quantum particles
+    function createQuantumParticles() {
+      const quantumBg = document.getElementById('quantum-bg');
+      const particleCount = 20;
       
-      timerInterval = setInterval(function() {
-        seconds++;
-        updateTimeDisplay();
-        
-        if (seconds >= MAX_TIME) {
-          clearInterval(timerInterval);
-          document.getElementById("prediction-page").style.display = "none";
-          document.getElementById("timeout-page").style.display = "block";
-        }
-      }, 1000);
-    }
-
-    function resetApplication() {
-      location.reload();
-    }
-
-    function checkLogin() {
-      var pass = document.getElementById("password").value;
-      if (pass === "PYAUNG") {
-        document.getElementById("login-box").style.display = "none";
-        document.getElementById("uid-verification").style.display = "block";
-      } else {
-        document.getElementById("error-message").style.display = "block";
+      for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'quantum-particle';
+        particle.style.left = Math.random() * 100 + 'vw';
+        particle.style.animationDelay = Math.random() * 8 + 's';
+        particle.style.animationDuration = (6 + Math.random() * 6) + 's';
+        quantumBg.appendChild(particle);
       }
     }
+    
+    // Firebase Configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyAy3QvFmhKiOX38MZiINfZq2yYXGhb7uL8",
+      authDomain: "ck-adm.firebaseapp.com",
+      databaseURL: "https://ck-adm-default-rtdb.europe-west1.firebasedatabase.app/",
+      projectId: "ck-adm",
+      storageBucket: "ck-adm.appspot.com",
+      messagingSenderId: "192822942347",
+      appId: "1:192822942347:web:f27eee393e16c84544528e"
+    };
 
-    function verifyUID() {
-      const uid = document.getElementById("uid").value;
-      const uidError = document.getElementById("uid-error");
-      const uidSuccess = document.getElementById("uid-success");
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    // Global Variables
+    let expireTime = parseInt(localStorage.getItem('expireTime')) || 0;
+    let timerInterval;
+    let quantumInterval;
+    let bigCount = 0;
+    let smallCount = 0;
+
+    // Initialize
+    window.onload = function() {
+      createQuantumParticles();
       
-      uidError.style.display = "none";
-      uidSuccess.style.display = "none";
-      
-      if (uid.length < 4 || uid.length > 6 || !/^\d+$/.test(uid)) {
-        uidError.style.display = "block";
+      if (expireTime && Date.now() < expireTime) {
+        document.getElementById('key-content').style.display = 'block';
+        startSession();
+      } else {
+        document.getElementById('key-activation').style.display = 'block';
+        localStorage.removeItem('expireTime');
+      }
+    };
+
+    // Key Activation Functions
+    function activateKey() {
+      const key = document.getElementById('keyInput').value.trim().toUpperCase();
+      if (!key) {
+        alert("Please enter a quantum access key");
         return;
       }
-      
-      uidSuccess.style.display = "block";
-      
-      setTimeout(() => {
-        document.getElementById("uid-verification").style.display = "none";
-        document.getElementById("prediction-page").style.display = "block";
-        startTimer();
-        fetchPrediction();
-      }, 3000);
-    }
 
-    const API_URL = 'https://api.bdg88zf.com/api/webapi/GetGameIssue';
-    const REQUEST_DATA = {
-      typeId: 1,
-      language: 0,
-      random: "e7fe6c090da2495ab8290dac551ef1ed",
-      signature: "1F390E2B2D8A55D693E57FD905AE73A7",
-      timestamp: 1723726679
-    };
+      const btn = document.querySelector('.quantum-button');
+      const originalText = btn.innerHTML;
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> VERIFYING...';
+      btn.disabled = true;
 
-    let periodResults = {};
-
-    function fetchPrediction() {
-      fetch(API_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json;charset=UTF-8"
-        },
-        body: JSON.stringify(REQUEST_DATA)
-      })
-      .then(response => response.json())
-      .then(data => {
-        if (data && data.data) {
-          let issueNumber = data.data.issueNumber || "Unknown";
-          if (!periodResults[issueNumber]) {
-            let num1 = Math.floor(Math.random() * 10);
-            let num2 = (num1 + 3) % 10;
-            let sumDigits = issueNumber.split('').reduce((acc, num) => acc + parseInt(num), 0);
-            let bigSmallPrediction = sumDigits % 2 === 0 ? "Big" : "Small";
-            periodResults[issueNumber] = {
-              bigSmallPrediction,
-              predictedNumbers: `${num1}/${num2}`
-            };
+      db.ref('keys/' + key).once('value').then(snapshot => {
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+        
+        if (snapshot.exists()) {
+          const data = snapshot.val();
+          if (data.used) {
+            alert("This quantum key has already been used!");
+            return;
           }
-
-          let { bigSmallPrediction, predictedNumbers } = periodResults[issueNumber];
-
-          document.getElementById("result").innerHTML = `PERIOD: <span class="box period-box">${issueNumber}</span>`;
-          document.getElementById("signal").innerHTML = `SIGNAL: <span class="box ${bigSmallPrediction.toLowerCase()}">${bigSmallPrediction}</span>`;
-          document.getElementById("prediction").innerHTML = `NUMBERS: <span class="box number-box">${predictedNumbers}</span>`;
-          document.getElementById("live-result").innerHTML = "✅ Live data updated successfully";
+          
+          const extraTime = data.duration * 60 * 1000;
+          expireTime = Math.max(Date.now(), expireTime) + extraTime;
+          localStorage.setItem('expireTime', expireTime);
+          
+          db.ref('keys/' + key).update({ used: true });
+          
+          document.getElementById('key-content').style.display = 'block';
+          alert(`Quantum Access Activated! Added ${data.duration} minutes`);
+          startSession();
         } else {
-          document.getElementById("live-result").innerHTML = "⚠️ Connection error";
+          alert("Invalid Quantum Key");
         }
-      })
-      .catch(error => {
-        document.getElementById("live-result").innerHTML = "⚠️ Connection error";
-        console.error("API Error:", error);
+      }).catch(error => {
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+        alert("Quantum Network Error. Please try again.");
+        console.error(error);
       });
     }
 
-    setInterval(fetchPrediction, 10000);
+    function startSession() {
+      if (timerInterval) clearInterval(timerInterval);
+      updateTimer();
+      timerInterval = setInterval(updateTimer, 1000);
+    }
+
+    function updateTimer() {
+      const now = Date.now();
+      const remaining = expireTime - now;
+      
+      if (remaining <= 0) {
+        clearInterval(timerInterval);
+        clearInterval(quantumInterval);
+        document.getElementById('key-timer').textContent = "Quantum Access Expired";
+        document.getElementById('key-content').style.display = 'none';
+        document.getElementById('quantum-interface').style.display = 'none';
+        document.getElementById('key-activation').style.display = 'block';
+        localStorage.removeItem('expireTime');
+        return;
+      }
+      
+      const hours = Math.floor(remaining / (1000 * 60 * 60));
+      const minutes = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((remaining % (1000 * 60)) / 1000);
+      
+      document.getElementById('key-timer').textContent = `Quantum Access: ${hours}h ${minutes}m ${seconds}s`;
+    }
+
+    function showQuantumInterface() {
+      document.getElementById('key-activation').style.display = 'none';
+      document.getElementById('quantum-interface').style.display = 'block';
+      startQuantumPrediction();
+    }
+
+    // Quantum Prediction System
+    function startQuantumPrediction() {
+      const patternString = `BIG SMALL BIG SMALL BIG BIG BIG SMALL SMALL BIG BIG SMALL BIG SMALL SMALL SMALL BIG SMALL BIG BIG BIG SMALL BIG BIG SMALL BIG BIG BIG BIG SMALL BIG SMALL SMALL BIG SMALL BIG BIG SMALL BIG SMALL BIG SMALL SMALL BIG BIG SMALL`;
+      const results = patternString.split(" ");
+      let lastPeriodIndex = -1;
+
+      const pad = (n, w = 2) => String(n).padStart(w, '0');
+      
+      const getMMTime = () => {
+        const now = new Date();
+        const utc = now.getTime() + now.getTimezoneOffset() * 60000;
+        return new Date(utc + 6.5 * 60 * 60 * 1000);
+      };
+
+      const REFERENCE_TIME_MM = "2025-06-19T16:38:30+06:30";
+      const REFERENCE_SUFFIX = 51217;
+      
+      const baseIndexCalc = () => {
+        const refDate = new Date(REFERENCE_TIME_MM);
+        const start = new Date(refDate);
+        start.setHours(0, 0, 0, 0);
+        const refSecs = Math.floor((refDate - start) / 1000);
+        return REFERENCE_SUFFIX - Math.floor(refSecs / 30);
+      };
+      
+      const BASE_INDEX = baseIndexCalc() + 1;
+
+      function buildPeriod(now) {
+        const y = now.getFullYear();
+        const m = pad(now.getMonth() + 1);
+        const d = pad(now.getDate());
+        const start = new Date(now);
+        start.setHours(0, 0, 0, 0);
+        const secs = Math.floor((now - start) / 1000);
+        const pIndex = Math.floor(secs / 30);
+        const suffix = pad(BASE_INDEX + pIndex, 5);
+        const period = `${y}${m}${d}1000${suffix}`;
+        document.getElementById('period').textContent = `QUANTUM PERIOD: ${period}`;
+
+        if (pIndex !== lastPeriodIndex) {
+          lastPeriodIndex = pIndex;
+          const outcome = results[pIndex % results.length];
+          const resultEl = document.getElementById('prediction-result');
+          
+          // Update counts
+          if (outcome === 'BIG') {
+            bigCount++;
+            document.getElementById('big-count').textContent = bigCount;
+          } else {
+            smallCount++;
+            document.getElementById('small-count').textContent = smallCount;
+          }
+          
+          resultEl.textContent = outcome;
+          resultEl.className = `prediction-result prediction-${outcome.toLowerCase()}`;
+          
+          // Add glow effect
+          resultEl.style.boxShadow = `0 0 15px ${outcome === 'BIG' ? 'var(--matrix-green)' : 'var(--neon-pink)'}`;
+          setTimeout(() => {
+            resultEl.style.boxShadow = 'none';
+          }, 1000);
+        }
+      }
+
+      function quantumTick() {
+        const now = getMMTime();
+        const timeStr = now.toLocaleTimeString('en-US', {
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit',
+          hour12: false
+        }).toUpperCase();
+        
+        document.getElementById('clock').textContent = timeStr;
+        const secs = now.getSeconds();
+        const remain = 30 - (secs % 30);
+        
+        document.getElementById('countdown').textContent = `${pad(remain)}s`;
+        
+        if (remain <= 5) {
+          document.getElementById('timer').style.color = 'var(--neon-pink)';
+          document.getElementById('timer').style.fontWeight = '600';
+        } else {
+          document.getElementById('timer').style.color = 'var(--quantum-blue)';
+          document.getElementById('timer').style.fontWeight = '';
+        }
+        
+        if (secs % 30 === 0) buildPeriod(now);
+      }
+
+      // Initialize quantum prediction
+      buildPeriod(getMMTime());
+      quantumInterval = setInterval(quantumTick, 1000);
+    }
   </script>
 </body>
 </html>
